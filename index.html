@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gesture Ninja - Webcam Hand-Tracking Arcade Game</title>
+  <meta name="description" content="A webcam-controlled cyberpunk blade game powered by real-time hand tracking, featuring 90-second matches and progressive difficulty.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/hud.css">
+
+  <!-- MediaPipe Hands & Camera Utils CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. PORTFOLIO LANDING PAGE
+       ========================================================================= -->
+  <div id="landing-page" class="landing-container">
+    <!-- Navigation Header -->
+    <header class="landing-header">
+      <div class="nav-inner">
+        <a href="#hero-section" class="nav-logo">
+          <span class="logo-icon">⚔️</span> GESTURE NINJA
+        </a>
+        <nav class="nav-links">
+          <a href="#hero-section" class="nav-link">HOME</a>
+          <button type="button" class="nav-link-btn how-it-works-trigger">HOW IT WORKS</button>
+          <a href="#features-section" class="nav-link">FEATURES</a>
+        </nav>
+        <div class="nav-actions">
+          <button type="button" class="cyber-btn primary-btn play-now-trigger nav-cta-btn">
+            <span>⚔️</span> PLAY NOW
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero-section" class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot" style="background: var(--neon-cyan);"></span> WEBCAM COMPUTER VISION ARCADE
+        </div>
+        <h1 class="hero-title">GESTURE NINJA</h1>
+        <div class="hero-tagline">Your hand is the blade.</div>
+        <p class="hero-description">
+          A webcam-controlled arcade game powered by real-time hand tracking. Move your hand to unleash glowing cyber slashes, slice flying targets, and dodge hazardous mines in 90-second rounds.
+        </p>
+      </div>
+
+      <!-- Hero Visual Interactive Showcase -->
+      <div class="hero-visual">
+        <div class="hero-card-preview">
+          <canvas id="hero-ambient-canvas"></canvas>
+          <div class="preview-overlay-content">
+            <div class="preview-hand-icon">✋</div>
+            <div class="preview-blade-glow"></div>
+            <div class="preview-status-chip">
+              <span class="pulse-dot" style="background: var(--neon-green);"></span> 60 FPS HAND TRACKING
+            </div>
+            <div class="preview-targets-mock">
+              <span class="mock-target target-orb">●</span>
+              <span class="mock-slash">/</span>
+              <span class="mock-target target-gold">★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perfectly Centered Hero Action Buttons -->
+      <div class="hero-btn-group">
+        <button type="button" class="cyber-btn primary-btn play-now-trigger" style="font-size: 1.25rem; padding: 16px 38px;">
+          <span>⚔️</span> START PLAYING
+        </button>
+        <button type="button" class="cyber-btn secondary-btn how-it-works-trigger">
+          <span>📜</span> HOW IT WORKS
+        </button>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features-section" class="section-container">
+      <div class="section-header">
+        <div class="section-subtitle">GAMEPLAY MECHANICS</div>
+        <h2 class="section-title">GAME FEATURES</h2>
+        <p class="section-desc">Engineered with low-latency physics, procedural sound, and an intense arcade difficulty curve.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Real-Time Hand Tracking</h3>
+          <p>GPU-accelerated MediaPipe landmark detection tracks your hand movements smoothly at 60 FPS.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Gesture-Based Controls</h3>
+          <p>Instant velocity calculations detect multi-directional Katana swipes (left, right, up, down, diagonal).</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⏱️</div>
+          <h3>90-Second Arcade Rounds</h3>
+          <p>Fast-paced 1m 30s timed matches designed to maximize score attacks, adrenaline, and high combos.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔥</div>
+          <h3>Progressive Difficulty</h3>
+          <p>Smoothly ramps from Easy (0-20s) up to Insane (75-90s) with faster projectile speeds and multi-launches.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3>High-Score System</h3>
+          <p>Persistent LocalStorage tracking records your personal best scores, max combos, and slice stats.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💥</div>
+          <h3>Particle VFX & Audio</h3>
+          <p>Dynamic slice bisecting, neon spark shockwaves, and procedural Web Audio API sound synthesis.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="landing-cta-banner">
+      <h2 class="cta-title">READY TO TEST YOUR REFLEXES?</h2>
+      <p class="cta-desc">Step into the arena, activate your cyber katana, and master the 90-second challenge.</p>
+      <button type="button" class="cyber-btn primary-btn play-now-trigger" style="font-size: 1.3rem; padding: 18px 40px; margin: 0 auto;">
+        <span>⚔️</span> START PLAYING
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <p>© 2026 Gesture Ninja. Developed as an interactive Web Computer Vision portfolio demonstration.</p>
+    </footer>
+  </div>
+
+
+  <!-- =========================================================================
+       2. IN-GAME ARENA & HUD
+       ========================================================================= -->
+  <div id="game-container" class="hidden">
+    <!-- Main Interactive 60fps Game Canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Hidden Raw Webcam Video Feed -->
+    <video id="webcam-video" playsinline style="display: none;"></video>
+
+    <!-- Top Utility Controls (Mute / Mouse Fallback / Exit Home) -->
+    <div class="top-util-bar">
+      <button type="button" class="util-btn exit-to-home-btn" title="Return to Landing Page">
+        <span>🏠</span> HOME
+      </button>
+      <button type="button" id="mouse-mode-btn" class="util-btn" title="Toggle Mouse/Touch fallback">
+        <span>✋</span> WEBCAM MODE
+      </button>
+      <button type="button" id="sound-toggle-btn" class="util-btn" title="Toggle Sound">
+        <span class="icon">🔊</span> AUDIO ON
+      </button>
+    </div>
+
+    <!-- Floating Mini PIP Camera Preview -->
+    <div id="pip-camera-container">
+      <div class="pip-header">
+        <span>SENSOR PIP</span>
+        <span class="pulse-dot"></span>
+      </div>
+      <canvas id="pip-preview-canvas" width="320" height="240"></canvas>
+    </div>
+
+    <!-- In-Game HUD -->
+    <div id="in-game-hud" class="hidden">
+      <div class="hud-top-bar">
+        <!-- Score Section -->
+        <div class="hud-score-panel">
+          <div class="hud-score-label">SCORE</div>
+          <div id="hud-score-val" class="hud-score-value">0</div>
+          <div class="hud-highscore-sub">BEST: <span id="hud-highscore-val">0</span></div>
+        </div>
+
+        <!-- 90-Second Match Timer & Difficulty in Center -->
+        <div class="hud-center-panel">
+          <div class="hud-timer-badge">
+            <span class="timer-icon">⏱️</span> TIME <span id="hud-timer-val">01:30</span>
+          </div>
+          <div class="hud-difficulty-badge">
+            DIFFICULTY: <span id="hud-difficulty-val">EASY</span>
+          </div>
+        </div>
+
+        <!-- Lives Section -->
+        <div class="hud-lives-panel">
+          <div class="hud-lives-label">SHIELDS</div>
+          <div id="hud-lives-container" class="hud-lives-container">
+            <div class="cyber-heart active">♥</div>
+            <div class="cyber-heart active">♥</div>
+            <div class="cyber-heart active">♥</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Combo Notification -->
+      <div id="combo-banner">
+        <div id="combo-count-text" class="combo-count">2x</div>
+        <div id="combo-label-text" class="combo-label">GREAT!</div>
+        <div id="combo-multiplier-text" class="combo-multiplier">1.5x MULTIPLIER</div>
+      </div>
+    </div>
+
+    <!-- Start / Calibration Screen inside Arena -->
+    <div id="start-screen" class="overlay-screen">
+      <div class="cyber-card">
+        <h1 class="logo-title">GESTURE NINJA</h1>
+        <div class="logo-subtitle">Your hand is the blade.</div>
+        
+        <p class="description-text">
+          Stand in front of your camera. Slash your hand swiftly across the screen to slice cyber targets within the 90-second time limit!
+        </p>
+
+        <div class="tracking-status-badge">
+          <span class="pulse-dot"></span> ⏳ STARTING CAMERA...
+        </div>
+
+        <div class="btn-group">
+          <button type="button" id="start-game-btn" class="cyber-btn primary-btn">
+            <span>⚔️</span> START 90s MATCH
+          </button>
+          <button type="button" id="how-to-play-btn" class="cyber-btn secondary-btn how-it-works-trigger">
+            <span>📜</span> HOW TO PLAY
+          </button>
+          <button type="button" id="calibrate-camera-btn" class="cyber-btn secondary-btn">
+            <span>🎯</span> CALIBRATE CAMERA
+          </button>
+          <button type="button" class="cyber-btn secondary-btn exit-to-home-btn" style="border-color: rgba(255, 255, 255, 0.15);">
+            <span>🏠</span> BACK TO HOME
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over / Results Screen -->
+    <div id="game-over-screen" class="overlay-screen hidden">
+      <div class="cyber-card" style="max-width: 620px;">
+        <div id="game-over-title" class="game-over-title">TIME'S UP!</div>
+        
+        <!-- High Score Notification -->
+        <div id="new-highscore-banner" class="new-highscore-banner hidden">
+          🏆 NEW HIGH SCORE!
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-label">YOUR SCORE</div>
+            <div id="final-score-val" class="stat-value highlight">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">BEST SCORE</div>
+            <div id="final-highscore-val" class="stat-value">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">MAX COMBO</div>
+            <div id="final-max-combo-val" class="stat-value">0x</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">TARGETS SLICED</div>
+            <div id="final-targets-sliced-val" class="stat-value">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">TIME PLAYED</div>
+            <div id="final-survival-val" class="stat-value">90s</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" id="restart-game-btn" class="cyber-btn primary-btn">
+            <span>🔄</span> PLAY AGAIN
+          </button>
+          <button type="button" id="gameover-home-btn" class="cyber-btn secondary-btn">
+            <span>🏠</span> BACK TO HOME
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       3. GLOBAL MODALS (Overlay over Landing Page or Game)
+       ========================================================================= -->
+
+  <!-- How To Play / How It Works Modal -->
+  <div id="how-to-play-modal" class="overlay-screen modal-global hidden">
+    <div class="cyber-card">
+      <h2 class="logo-title" style="font-size: 2.2rem; margin-bottom: 4px;">HOW IT WORKS</h2>
+      <div class="logo-subtitle">Master the Cyber Katana</div>
+
+      <div class="how-to-play-grid">
+        <div class="rule-item">
+          <div class="rule-number">01</div>
+          <div class="rule-text">
+            <h4>ENABLE CAMERA</h4>
+            <p>Allow browser webcam access. Position your hand ~1.5 to 2.5 feet from camera.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-number">02</div>
+          <div class="rule-text">
+            <h4>MOVE YOUR HAND</h4>
+            <p>Your fingertip and palm are tracked in real time with zero latency.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-number">03</div>
+          <div class="rule-text">
+            <h4>SLASH TARGETS</h4>
+            <p>Move your hand quickly across the camera frame to unleash a glowing Katana slash.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-number">04</div>
+          <div class="rule-text">
+            <h4>RULES & 90s TIMER</h4>
+            <p>Slice targets for points & combos. Avoid explosive bombs! Score maximum points in 90 seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Target Legend -->
+      <div class="target-legend">
+        <div class="legend-item">
+          <div class="legend-icon legend-target-normal">●</div>
+          <div class="legend-label">Target (+100)</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-icon legend-target-golden">★</div>
+          <div class="legend-label">Golden (+300)</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-icon legend-target-bomb">✕</div>
+          <div class="legend-label">Mine (-1 Shield)</div>
+        </div>
+      </div>
+
+      <button type="button" id="close-how-to-play-btn" class="cyber-btn primary-btn" style="margin-top: 14px;">
+        GOT IT
+      </button>
+    </div>
+  </div>
+
+  <!-- Camera Calibration Modal -->
+  <div id="calibration-modal" class="overlay-screen modal-global hidden">
+    <div class="cyber-card">
+      <h2 class="logo-title" style="font-size: 2.2rem; margin-bottom: 4px;">CALIBRATION</h2>
+      <div class="logo-subtitle">Hand Sensor Alignment</div>
+
+      <div class="calibration-container">
+        <div class="tracking-status-badge">
+          <span class="pulse-dot"></span> 🟢 SENSORS ACTIVE
+        </div>
+
+        <p class="description-text" style="font-size: 1rem; margin-bottom: 10px;">
+          Position your open palm inside the guide zone with good ambient lighting.
+        </p>
+
+        <div class="calibration-video-box">
+          <canvas id="calibration-preview-canvas" width="320" height="240"></canvas>
+          <div class="calibration-guide-box">
+            ALIGN HAND HERE
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="close-calibrate-btn" class="cyber-btn primary-btn">
+        READY TO SLICE
+      </button>
+    </div>
+  </div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

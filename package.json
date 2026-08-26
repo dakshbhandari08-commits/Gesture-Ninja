@@ -1,0 +1,13 @@
+{
+  "name": "gesture-ninja",
+  "version": "1.0.0",
+  "description": "A high-performance webcam hand-tracking cyber blade game built with Canvas and MediaPipe Hands",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "dev": "npx serve . -l 3000"
+  },
+  "keywords": ["game", "mediapipe", "hand-tracking", "canvas", "gesture-control", "webcam"],
+  "author": "",
+  "license": "MIT"
+}
